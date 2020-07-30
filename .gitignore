@@ -34,3 +34,6 @@ node_modules
 
 # Build
 .tmp
+
+# DS_Store
+.DS_Store

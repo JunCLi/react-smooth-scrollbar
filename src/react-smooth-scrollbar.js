@@ -39,6 +39,20 @@ export default class Scrollbar extends React.Component {
             requestAnimationFrame(() => cb(this.scrollbar));
         });
 
+				Object.keys(this.props).forEach((key) => {
+			      if (!key in this.scrollbar.options) {
+							  return;
+					  }
+		
+					  if (key === 'plugins') {
+							  Object.keys(this.props.plugins).forEach((pluginName) => {
+									  this.scrollbar.updatePluginOptions(pluginName, this.props.plugins[pluginName]);
+							  });
+					  } else {
+							  this.scrollbar.options[key] = this.props[key];
+					  }
+			  });
+
         this.scrollbar.addListener(this.handleScroll.bind(this));
     }
 
@@ -46,22 +60,6 @@ export default class Scrollbar extends React.Component {
         if (this.scrollbar) {
             this.scrollbar.destroy();
         }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        Object.keys(nextProps).forEach((key) => {
-            if (!key in this.scrollbar.options) {
-                return;
-            }
-
-            if (key === 'plugins') {
-                Object.keys(nextProps.plugins).forEach((pluginName) => {
-                    this.scrollbar.updatePluginOptions(pluginName, nextProps.plugins[pluginName]);
-                });
-            } else {
-                this.scrollbar.options[key] = nextProps[key];
-            }
-        });
     }
 
     componentDidUpdate() {
